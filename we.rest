@@ -1,0 +1,9 @@
+### gwt 
+GET http://localhost:8080/
+### post
+POST http://localhost:8080/
+Content-Type: application/json  
+
+{
+  "message": "fuck you"
+}

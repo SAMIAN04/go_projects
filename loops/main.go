@@ -1,8 +1,17 @@
 package main
 
+import (
+	"bufio"
+	// "go/scanner"
+	"os"
+	"fmt"
+)
+
 func main()  {
-	 days := []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}
-	 for _, day := range days {
-	 	println( day)
-	 }
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		line := scanner.Text()
+		
+		fmt.Println("You entered: \n", line)
+	}
 }
