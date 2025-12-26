@@ -1,25 +1,16 @@
 package main
 
-import (
-	"fmt"
-	"io"
-	"io/ioutil"
-	"os"
-)
+import "fmt"
 
-func main()  {
-	content := " fck you bitch"
-	file ,err := os.Create("./yo.txt")
-	if err != nil {
-		panic(err)
-	}
-	io.WriteString(file,content)
-	defer fmt.Println("file created successfully")
-    defer file.Close()
-	defer fmt.Println("file readeed")
-	data ,err := ioutil.ReadFile("./yo.txt")
-	if err != nil {
-        panic(err)
-	}
-	fmt.Println(string(data))
+func main() {
+	// Declare a variable to store the user's name
+	var name string
+	
+	// Display a prompt for the user
+	fmt.Print("Enter your name: ")
+	
+	// TODO: Use fmt.Scanln() to read the user's input into the 'name' variable
+	fmt.Scanln(&name)
+	// Display a greeting using the name entered
+	fmt.Printf("Hello, %s! fuck me harder.\n", name)
 }
