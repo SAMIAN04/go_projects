@@ -1,28 +1,50 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+// celsiusToFahrenheit converts Celsius to Fahrenheit
+// Returns an error if the temperature is below absolute zero (-273.15°C)
+func celsiusToFahrenheit(celsius float64) (float64, error) {
+	// TODO: Implement the conversion logic
+	// 1. Check if temperature is below absolute zero (-273.15°C)
+	// 2. If valid, convert using the formula: F = C × 9/5 + 32
+	// 3. Return appropriate value and error
+	if celsius < 0  {
+		err := errors.New("Error: temperature below absolute zero")
+		return 0,err
+	}
+	f := celsius * 9/5 +32
+	return f, nil
+}
 
 func main() {
-	// Person struct with three fields
-	type Person struct {
-		name      string
-		age       int
-		isStudent bool
+	// Test valid temperature
+	fmt.Println("Converting 25°C to Fahrenheit:")
+	fahrenheit, err := celsiusToFahrenheit(25)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("25°C = %.2f°F\n", fahrenheit)
 	}
 
-	// A sample person
-	john := Person{
-		name:      "John Doe",
-		age:       25,
-		isStudent: true,
+	// Test another valid temperature
+	fmt.Println("\nConverting 0°C to Fahrenheit:")
+	fahrenheit, err = celsiusToFahrenheit(0)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("0°C = %.2f°F\n", fahrenheit)
 	}
 
-	// TODO: Print john's name using fmt.Printf and the %s format verb
-	fmt.Printf("Name: %s\n", john.name)
-	
-	// TODO: Print john's age using fmt.Printf and the %d format verb
-	fmt.Printf("Age: %d\n", john.age)
-	
-	// TODO: Print whether john is a student using fmt.Printf and the %t format verb
-	fmt.Printf("Is student: %t\n", john.isStudent)
+	// Test invalid temperature (below absolute zero)
+	fmt.Println("\nConverting -300°C to Fahrenheit:")
+	fahrenheit, err = celsiusToFahrenheit(-300)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("-300°C = %.2f°F\n", fahrenheit)
+	}
 }
