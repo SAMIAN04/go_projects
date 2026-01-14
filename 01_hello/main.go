@@ -1,50 +1,39 @@
 package main
 
 import (
-	"errors"
-	"fmt"
+    "fmt"
+    "strconv"
 )
 
-// celsiusToFahrenheit converts Celsius to Fahrenheit
-// Returns an error if the temperature is below absolute zero (-273.15°C)
-func celsiusToFahrenheit(celsius float64) (float64, error) {
-	// TODO: Implement the conversion logic
-	// 1. Check if temperature is below absolute zero (-273.15°C)
-	// 2. If valid, convert using the formula: F = C × 9/5 + 32
-	// 3. Return appropriate value and error
-	if celsius < 0  {
-		err := errors.New("Error: temperature below absolute zero")
-		return 0,err
-	}
-	f := celsius * 9/5 +32
-	return f, nil
-}
-
 func main() {
-	// Test valid temperature
-	fmt.Println("Converting 25°C to Fahrenheit:")
-	fahrenheit, err := celsiusToFahrenheit(25)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Printf("25°C = %.2f°F\n", fahrenheit)
-	}
-
-	// Test another valid temperature
-	fmt.Println("\nConverting 0°C to Fahrenheit:")
-	fahrenheit, err = celsiusToFahrenheit(0)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Printf("0°C = %.2f°F\n", fahrenheit)
-	}
-
-	// Test invalid temperature (below absolute zero)
-	fmt.Println("\nConverting -300°C to Fahrenheit:")
-	fahrenheit, err = celsiusToFahrenheit(-300)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Printf("-300°C = %.2f°F\n", fahrenheit)
+    // Read input
+    var rowsInput string
+    var skipConditionInput string
+    fmt.Scanln(&rowsInput)
+    fmt.Scanln(&skipConditionInput)
+    
+    // Parse inputs
+    numRows, _ := strconv.Atoi(rowsInput)
+    skipCondition, _ := strconv.Atoi(skipConditionInput)
+    
+    // Provided 2D data array
+    data := [][]int{
+        {1, 2, 3, 4, 5},
+        {6, 7, 8, 9, 10},
+        {11, 12, 13, 14, 15},
+        {16, 17, 18, 19, 20},
+        {21, 22, 23, 24, 25},
+    }
+    
+    // TODO: Write your code below
+    // Use nested loops with labeled continue to process the data
+    // Check each row for the skip condition number
+    // Print appropriate messages based on whether the condition is found
+    for i := 0; i < numRows; i++ {
+		for j := 0; j < numRows; j++ {
+			if skipCondition == data[i][j] {
+			fmt.Println("fuck")
+		}
+		}
 	}
 }
