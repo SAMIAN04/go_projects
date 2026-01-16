@@ -7,33 +7,54 @@ import (
 
 func main() {
     // Read input
-    var rowsInput string
-    var skipConditionInput string
-    fmt.Scanln(&rowsInput)
-    fmt.Scanln(&skipConditionInput)
+    var threatLevel string
+    var maxZonesStr string
+    fmt.Scanln(&threatLevel)
+    fmt.Scanln(&maxZonesStr)
     
-    // Parse inputs
-    numRows, _ := strconv.Atoi(rowsInput)
-    skipCondition, _ := strconv.Atoi(skipConditionInput)
+    // Convert max zones to integer
+    maxZones, _ := strconv.Atoi(maxZonesStr)
     
-    // Provided 2D data array
-    data := [][]int{
-        {1, 2, 3, 4, 5},
-        {6, 7, 8, 9, 10},
-        {11, 12, 13, 14, 15},
-        {16, 17, 18, 19, 20},
-        {21, 22, 23, 24, 25},
+    // Security zones data
+    zones := [][]string{
+        {"low", "medium", "low"},
+        {"medium", "high", "low"},
+        {"critical", "medium", "high"},
+        {"low", "critical", "medium"},
     }
     
     // TODO: Write your code below
-    // Use nested loops with labeled continue to process the data
-    // Check each row for the skip condition number
-    // Print appropriate messages based on whether the condition is found
-    for i := 0; i < numRows; i++ {
-		for j := 0; j < numRows; j++ {
-			if skipCondition == data[i][j] {
-			fmt.Println("fuck")
-		}
-		}
-	}
+    // Use nested loops with labeled break to search for the threat
+    // Print threat location if found, or "Threat not found in searched zones" if not found
+    // Then use switch with fallthrough for security alerts
+    
+    found := false
+    
+searchLoop:
+    for i := 0; i < maxZones && i < len(zones); i++ {
+        for j := 0; j < len(zones[i]); j++ {
+            if zones[i][j] == threatLevel {
+                fmt.Printf("Threat found at zone %d position %d\n", i, j)
+                found = true
+                break searchLoop
+            }
+        }
+    }
+    
+    if !found {
+        fmt.Println("Threat not found in searched zones")
+    }
+    
+    switch threatLevel {
+    case "critical":
+        fmt.Println("CRITICAL: Lockdown initiated!")
+        fallthrough
+    case "high":
+        fmt.Println("HIGH: Security breach detected!")
+        fallthrough
+    case "medium":
+        fmt.Println("MEDIUM: Increased monitoring active")
+    case "low":
+        fmt.Println("LOW: Standard security protocols")
+    }
 }
