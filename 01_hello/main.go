@@ -1,45 +1,30 @@
 package main
 
 import (
-	"fmt"
-	"strconv"
-
-	
+    "fmt"
+    "strconv"
 )
 
+// TODO: Define your Sensor struct here
+
+// TODO: Define your displayReading method with value receiver here
+
+// TODO: Define your adjustTemperature method with value receiver here
+
 func main() {
-    // Read input
-    var threatLevel string
-    var maxZonesStr string
-    fmt.Scanln(&threatLevel)
-    fmt.Scanln(&maxZonesStr)
+    // Read inputs
+    var sensorID string
+    var tempStr string
+    var adjustStr string
     
-    // Convert max zones to integer
-    maxZones, _ := strconv.Atoi(maxZonesStr)
+    fmt.Scanln(&sensorID)
+    fmt.Scanln(&tempStr)
+    fmt.Scanln(&adjustStr)
     
-    // Security zones data
-    zones := [][]string{
-        {"low", "medium", "low"},
-        {"medium", "high", "low"},
-        {"critical", "medium", "high"},
-        {"low", "critical", "medium"},
-    }
+    // Parse temperature and adjustment values
+    temperature, _ := strconv.ParseFloat(tempStr, 64)
+    adjustment, _ := strconv.ParseFloat(adjustStr, 64)
     
-    // TODO: Write your code below
-    // Use nested loops with labeled break to search for the threat
-    // Print threat location if found, or "Threat not found in searched zones" if not found
-    // Then use switch with fallthrough for security alerts
-     found :=false
-searchLoop:
-     for i := 0; i < maxZones && i < len(zones) ; i++ {
-        for j := 0; j < len(zones); j++ {
-            if zones[i][j] == threatLevel {
-                fmt.Println(threatLevel)
-                found = true
-                fmt.Println(found)
-                break searchLoop
-            }
-        }
-     }
+    // TODO: Create a Sensor instance and call the required methods
     
 }
