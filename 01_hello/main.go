@@ -2,37 +2,52 @@ package main
 
 import (
 	"fmt"
-
 	
+	"strconv"
+	"strings"
 )
 
 func main() {
 	// Read input
-	var action string
-	fmt.Scanln(&action)
+	var dataType string
+	var valueStr string
+	fmt.Scanln(&dataType)
+	fmt.Scanln(&valueStr)
 
-	// TODO: Define your MediaPlayer interface here
-	type MediaPlayer interface {
-		Play() string
-		Pause() string
-		Stop() string
+	// TODO: Write your code below
+	// 1. Create the processData function that accepts interface{}
+	// 2. Convert valueStr to the appropriate type based on dataType
+	// 3. Call processData with the converted value
+
+	switch dataType {
+	case "int":
+		{
+			intiger, _ := strconv.Atoi(valueStr)
+			processData(intiger)
+		}
+	case "string":
+		{
+			processData(valueStr)
+		}
+	case "bool": {
+		b, _ := strconv.ParseBool(valueStr)
+		processData(b)
 	}
-	// TODO: Write your code below to handle the action and print the required output
-switch action {
-case "play": {
-	fmt.Println("MediaPlayer interface requires: Play() string")
-}
-case "pause" :{
-		fmt.Println("MediaPlayer interface requires: Pause() string")
-
-}
-case "stop" :{
-	fmt.Println("MediaPlayer interface requires: Stop() string")
-
-}
-}
+case "slice" : {
+	
+	parts := strings.Split(valueStr, ",")
+	slices := make([]int, 0,len(parts))
+	for _, part := range parts {
+		n, err := strconv.Atoi(strings.TrimSpace(part))
+		if err == nil {
+			slices = append(slices, n)
+		}
+	}
+	processData(slices)
 	
 }
-	// Print the result
-	// Remember to print in format: "MediaPlayer interface requires: [MethodName]() string"
-
+	}
+}
+func processData(v interface{}) {
+	fmt.Printf("Value: %v, Type: %T\n", v,v)
+}
