@@ -4,7 +4,6 @@ import (
 	"fmt"
 	
 	"strconv"
-	"strings"
 )
 
 func main() {
@@ -14,40 +13,45 @@ func main() {
 	fmt.Scanln(&dataType)
 	fmt.Scanln(&valueStr)
 
-	// TODO: Write your code below
-	// 1. Create the processData function that accepts interface{}
-	// 2. Convert valueStr to the appropriate type based on dataType
-	// 3. Call processData with the converted value
-
+	// Variable to store the interface value
+	var interfaceValue interface{}
 	switch dataType {
 	case "int":
 		{
-			intiger, _ := strconv.Atoi(valueStr)
-			processData(intiger)
+			interfaceValue, _ = strconv.Atoi(valueStr)
+			value, ok := interfaceValue.(int)
+	if ok {
+		 fmt.Printf("Success: %v is a %T\n", value, value)
+	} else {
+		fmt.Printf("Failed: value is not a %s\n", dataType)
+	}
+
+
 		}
 	case "string":
 		{
-			processData(valueStr)
+			interfaceValue = valueStr
+		value, ok := interfaceValue.(string)
+	if ok {
+		 fmt.Printf("Success: %v is a %T\n", value, value)
+	} else {
+		fmt.Printf("Failed: value is not a %s\n", dataType)
+	}
 		}
-	case "bool": {
-		b, _ := strconv.ParseBool(valueStr)
-		processData(b)
+	case "bool":
+		{
+			interfaceValue, _ = strconv.ParseBool(valueStr)
+		value, ok := interfaceValue.(bool)
+	if ok {
+		 fmt.Printf("Success: %v is a %T\n", value, value)
+	} else {
+		fmt.Printf("Failed: value is not a %s\n", dataType)
 	}
-case "slice" : {
-	
-	parts := strings.Split(valueStr, ",")
-	slices := make([]int, 0,len(parts))
-	for _, part := range parts {
-		n, err := strconv.Atoi(strings.TrimSpace(part))
-		if err == nil {
-			slices = append(slices, n)
 		}
 	}
-	processData(slices)
-	
-}
-	}
-}
-func processData(v interface{}) {
-	fmt.Printf("Value: %v, Type: %T\n", v,v)
+	// TODO: Write your code below
+	// 1. Convert valueStr to appropriate type based on dataType and store in interfaceValue
+	// 2. Use type assertion to check if interfaceValue contains the expected type
+	// 3. Print the appropriate success or failure message
+
 }
