@@ -1,57 +1,58 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	
-	"strconv"
 	"strings"
+
+	"os"
 )
-
-type Speaker interface{ Speak() string }
-type Person struct{ Name string }
-type Parrot struct{ Name string }
-
+type Task struct {
+		Name      string
+		completed bool
+	}
 func main() {
 	// Read input
-	var numSpeakersStr string
-	var speakerTypesStr string
-	var speakerNamesStr string
+	var appName string
+	var userName string
+	fmt.Scanln(&appName)
+	fmt.Scanln(&userName)
+	var num int
+// TODO: Write your code below
+	// Define the Task struct
+	// Create a slice of Task structs
+	// Display welcome message and menu
+	// Print current tasks count
+	fmt.Printf("Welcome to %s, %s!\n", appName, userName)
+	Tasks := make([]Task, 0)
+	fmt.Println("1. Add Task")
+	fmt.Println("2. View Tasks")
+	fmt.Println("3. Complete Task")
+	fmt.Println("4. Remove Task")
+	fmt.Println("5. Exit")
+	fmt.Printf("Current tasks: %d\n",len(Tasks) )
+    fmt.Scanln(&num)
+// if num == 1 {
+// 	scanner := bufio.NewScanner(os.Stdin)
+// 	scanner.Scan()
+// 	inputs := scanner.Text()
+// 	multpleTasks := strings.Split(inputs, ",")
+// 	for i := 0; i < len(multpleTasks); i++ {
+// 	Tasks =	addTask(Tasks,multpleTasks[i])
+// 	}
+	
+// 	}else {
+// 		fmt.Println("enter valid option")
+// }
 
-	fmt.Scanln(&numSpeakersStr)
-	fmt.Scanln(&speakerTypesStr)
-	fmt.Scanln(&speakerNamesStr)
+fmt.Printf("Current tasks: %d\n",len(Tasks) )
+	
 
-	// Parse input
-	numSpeakers, _ := strconv.Atoi(numSpeakersStr)
-	speakerTypes := strings.Split(speakerTypesStr, ",")
-	speakerNames := strings.Split(speakerNamesStr, ",")
-speakers := make([]Speaker,0)
-	// TODO: Write your code below
-	// 1. Define the Speaker interface
-	// 2. Define Person and Parrot structs
-	// 3. Implement Speak() methods for both structs
-	// 4. Create makeAllSpeak function
-	// 5. Create speakers based on input and store in a slice
-	// 6. Call makeAllSpeak with your slice
-	for i := 0; i < numSpeakers; i++ {
-	    if speakerTypes[i] == "person"{
-			speakers = append(speakers, Person{Name: speakerNames[i]})
-		}else if speakerTypes[i] =="parrot" {
-			speakers = append(speakers, Parrot{Name: speakerNames[i]})
-		}else{
-			fmt.Println("unknown type")
-		}
-	}
-	makeAllSpeak(speakers)
 }
-func makeAllSpeak(speakers []Speaker) {
-   for _,speak := range speakers {
-      fmt.Println(speak.Speak())
-   }
-}
-func (p Person) Speak() string {
-  return  fmt.Sprintf("Hello, I'm %s", p.Name)
-}
-func (p Parrot) Speak() string {
-  return fmt.Sprintf("Squawk! %s says hello!", p.Name)
+
+//addTask 
+func addTask(tasks []Task, taskName string) []Task {
+     task := Task{Name: taskName, completed: false}
+	 tasks = append(tasks, task)
+	 return tasks
 }
