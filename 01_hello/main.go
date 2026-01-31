@@ -3,56 +3,75 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"strings"
-
 	"os"
+	"strings"
 )
+
 type Task struct {
-		Name      string
-		completed bool
-	}
-func main() {
-	// Read input
-	var appName string
-	var userName string
-	fmt.Scanln(&appName)
-	fmt.Scanln(&userName)
-	var num int
-// TODO: Write your code below
-	// Define the Task struct
-	// Create a slice of Task structs
-	// Display welcome message and menu
-	// Print current tasks count
-	fmt.Printf("Welcome to %s, %s!\n", appName, userName)
-	Tasks := make([]Task, 0)
-	fmt.Println("1. Add Task")
-	fmt.Println("2. View Tasks")
-	fmt.Println("3. Complete Task")
-	fmt.Println("4. Remove Task")
-	fmt.Println("5. Exit")
-	fmt.Printf("Current tasks: %d\n",len(Tasks) )
-    fmt.Scanln(&num)
-// if num == 1 {
-// 	scanner := bufio.NewScanner(os.Stdin)
-// 	scanner.Scan()
-// 	inputs := scanner.Text()
-// 	multpleTasks := strings.Split(inputs, ",")
-// 	for i := 0; i < len(multpleTasks); i++ {
-// 	Tasks =	addTask(Tasks,multpleTasks[i])
-// 	}
-	
-// 	}else {
-// 		fmt.Println("enter valid option")
-// }
-
-fmt.Printf("Current tasks: %d\n",len(Tasks) )
-	
-
+	Name      string
+	completed bool
 }
 
-//addTask 
+func main() {
+	Tasks := make([]Task, 0)
+
+	var num int
+	fmt.Scanln(&num)
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	inputs := scanner.Text()
+	multpleTasks := strings.Split(inputs, ",")
+
+	if inputs != "" {
+		for i := 0; i < len(multpleTasks); i++ {
+			Tasks = addTask(Tasks, multpleTasks[i])
+		}
+	}
+
+	// Print all tasks
+	//viewAllTasks(Tasks)
+
+	// Count completed and remaining
+	completed := 0
+	for _, task := range Tasks {
+		if task.completed {
+			completed++
+		}
+	}
+	remaining := len(Tasks) - completed
+
+	fmt.Printf("Total: %d tasks (%d completed, %d remaining)\n", len(Tasks), completed, remaining)
+}
+
+// addTask
 func addTask(tasks []Task, taskName string) []Task {
-     task := Task{Name: taskName, completed: false}
-	 tasks = append(tasks, task)
-	 return tasks
+	tasktype := strings.Split(taskName, ":")
+	
+	// Extract just the name (before the colon)
+	name := ""
+	isCompleted := false
+	if len(tasktype) > 0 {
+		name = strings.TrimSpace(tasktype[0])
+	}
+	if len(tasktype) > 1 {
+		isCompleted = strings.TrimSpace(tasktype[1]) == "true"
+	}
+	
+	task := Task{Name: name, completed: isCompleted}
+	tasks = append(tasks, task)
+	
+	return tasks
+}
+
+func viewAllTasks(Tasks []Task) {
+	for _, task := range Tasks {
+		if task.completed {
+			fmt.Printf("[x] %s\n", task.Name)
+		} else {
+			fmt.Printf("[ ] %s\n", task.Name)
+		}
+	}
+}
+func completeTask(Task , index int) string  {
+	return ""
 }
