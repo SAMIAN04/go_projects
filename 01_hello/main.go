@@ -15,16 +15,20 @@ type Task struct {
 func main()  {
 	var numTasksStr string
 	var taskData string
-	var completedTaskStr string
+	// var completedTaskStr string
+	var removeTaskstr string
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	numTasksStr = scanner.Text()
 	scanner.Scan()
 	taskData = scanner.Text()
+	// scanner.Scan()
+	// completedTaskStr = scanner.Text()
 	scanner.Scan()
-	completedTaskStr = scanner.Text()
+	removeTaskstr = scanner.Text()
 	numTasks, _ := strconv.Atoi(numTasksStr)
-	completedTask , _ := strconv.Atoi(completedTaskStr)
+	// completedTask , _ := strconv.Atoi(completedTaskStr)
+	removeTask , _ := strconv.Atoi(removeTaskstr)
 	var tasks []Task
 	taskEntries := strings.Split(taskData, ",")
 	
@@ -41,7 +45,8 @@ func main()  {
 			tasks = append(tasks, task)
 		}
 	}
-    completeTask(&tasks, completedTask) 
+    // completeTask(&tasks, completedTask) 
+	removetask(&tasks,removeTask)
     viewAllTasks(tasks)
 	completedCount := 0
 	for _, task := range tasks {
@@ -50,8 +55,9 @@ func main()  {
 		}
 	}
 	
-	incompleteCount := numTasks - completedCount
-	fmt.Printf("Task '%s' marked as completed!\n", tasks[completedTask].Name)
+	incompleteCount := len(tasks) - completedCount
+	fmt.Printf("Task '%v' removed successfully!\n", tasks[removeTask].Name)
+	// fmt.Printf("Task '%s' marked as completed!\n", tasks[completedTask].Name)
 	fmt.Printf("Total: %d tasks (%d completed, %d remaining)\n", numTasks, completedCount, incompleteCount)
 }
 
@@ -67,4 +73,7 @@ func viewAllTasks(tasks []Task) {
 			fmt.Printf("[ ] %s\n", task.Name)
 		}
 	}
+}
+func removetask(tasks *[]Task, index int) []Task  {
+	return append((*tasks)[:index], (*tasks)[index+1:]...)
 }
