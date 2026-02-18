@@ -7,73 +7,54 @@ import (
 	"strconv"
 	"strings"
 )
-type Task struct {
-	Name      string
-	Completed bool
-}
-
+ type ProductInfo struct{
+	Name string
+	price float64
+	quantity int
+ }
 func main()  {
-	var numTasksStr string
-	var taskData string
-	// var completedTaskStr string
-	var removeTaskstr string
+	var initialInventoryStr string
+	var operationsStr string
+	var parametersStr string
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
-	numTasksStr = scanner.Text()
+	initialInventoryStr = scanner.Text()
 	scanner.Scan()
-	taskData = scanner.Text()
-	// scanner.Scan()
-	// completedTaskStr = scanner.Text()
-	scanner.Scan()
-	removeTaskstr = scanner.Text()
-	numTasks, _ := strconv.Atoi(numTasksStr)
-	// completedTask , _ := strconv.Atoi(completedTaskStr)
-	removeTask , _ := strconv.Atoi(removeTaskstr)
-	var tasks []Task
-	taskEntries := strings.Split(taskData, ",")
+	operationsStr= scanner.Text()
+    scanner.Scan()
+	parametersStr = scanner.Text()
+ 
+	initialInventoryParts := strings.Split(initialInventoryStr, ",")
+	parametersParts := strings.Split(parametersStr,"|")
+fmt.Println(operationsStr)
+var initialInventory []ProductInfo
+
+for i := 0; i < len(initialInventoryParts); i++ {
 	
-	for _, entry := range taskEntries {
-		parts := strings.Split(entry, ":")
-		if len(parts) >= 2 { // Add safety check
-			name := parts[0]
-			completed, _ := strconv.ParseBool(parts[1])
-			
-			task := Task{
-				Name:      name,
-				Completed: completed,
-			}
-			tasks = append(tasks, task)
-		}
+	productDetails:= strings.Split(initialInventoryParts[i],":")
+	name := productDetails[0]
+	price ,_:= strconv.ParseFloat(productDetails[1],64)
+	quantity,_ := strconv.Atoi(productDetails[2])
+	Products := ProductInfo{Name: name,price: float64(price),quantity: quantity}
+	initialInventory = append(initialInventory, Products)
+
+}
+for i := 0; i < len(parametersParts); i++ {
+	switch len(parametersParts[i]) {
+	case :
+		
 	}
-    // completeTask(&tasks, completedTask) 
-	removetask(&tasks,removeTask)
-    viewAllTasks(tasks)
-	completedCount := 0
-	for _, task := range tasks {
-		if task.Completed {
-			completedCount++
-		}
-	}
-	
-	incompleteCount := len(tasks) - completedCount
-	fmt.Printf("Task '%v' removed successfully!\n", tasks[removeTask].Name)
-	// fmt.Printf("Task '%s' marked as completed!\n", tasks[completedTask].Name)
-	fmt.Printf("Total: %d tasks (%d completed, %d remaining)\n", numTasks, completedCount, incompleteCount)
+}
+ displayheading(initialInventory)
 }
 
-func completeTask(tasks *[]Task, index int)  {
-	(*tasks)[index].Completed = true
-	
-}
-func viewAllTasks(tasks []Task) {
-	for _, task := range tasks {
-		if task.Completed {
-			fmt.Printf("[x] %s\n", task.Name)
-		} else {
-			fmt.Printf("[ ] %s\n", task.Name)
-		}
+//all functions
+func displayheading(initialInventory []ProductInfo) {
+	var totalProducts int
+	for i := 0; i < len(initialInventory); i++ {
+		totalProducts += initialInventory[i].quantity
 	}
+	fmt.Println("=== INVENTORY MANAGEMENT SYSTEM ===")
+	fmt.Printf("System initialized with %d products\n", totalProducts)
 }
-func removetask(tasks *[]Task, index int) []Task  {
-	return append((*tasks)[:index], (*tasks)[index+1:]...)
-}
+
