@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
+"sort"
 	
 )
 
@@ -115,13 +115,13 @@ func main() {
 			}
 		case "update":
 			{
-				update(updateInventory[i].Name, updateInventory[i].quantity, &initialInventoryVals)
+				update(updateInventory[0].Name, updateInventory[0].quantity, &initialInventoryVals)
 
 				fmt.Println("Operation completed. Continuing to next operation...")
 			}
 		case "exit":
 			{
-exit(initialInventory)
+exit(&initialInventoryVals)
 			}
 		}
 	}
@@ -175,7 +175,7 @@ func report(report []ReportProduct, allProduct []ProductInfo) {
 				fmt.Printf("Products with stock below %d:\n", report[i].quantity)
 				for j := 0; j < len(allProduct); j++ {
 					if report[i].quantity > allProduct[j].quantity {
-						fmt.Printf("- %s: %d units (Price: %v)\n", allProduct[j].Name, allProduct[j].quantity, allProduct[j].price)
+						fmt.Printf("- %s: %d units (Price: $%v)\n", allProduct[j].Name, allProduct[j].quantity, allProduct[j].price)
 						found = true
 					}
 
@@ -189,10 +189,15 @@ func report(report []ReportProduct, allProduct []ProductInfo) {
 		case "full":
 			{
 				fmt.Println("=== FULL REPORT ===")
-				fmt.Printf(" Complete inventory (minimum threshold: %d):\n", report[i].quantity)
+                sort.Slice(allProduct,func(i, f int) bool {
+				return allProduct[i].Name < allProduct[f].Name
+			})
+			
+				fmt.Printf("Complete inventory (minimum threshold: %d):\n", report[i].quantity)
 				for j := 0; j < len(allProduct); j++ {
+					// we have problem of selecting producta accroding to thashold here
 					if report[i].quantity <= allProduct[j].quantity {
-						fmt.Printf("- %s: %d units (Price: %v)\n", allProduct[j].Name, allProduct[j].quantity, allProduct[j].price)
+						fmt.Printf("- %s: %d units @ $%.2f each [OK]\n", allProduct[j].Name, allProduct[j].quantity, allProduct[j].price)
 						found = true
 					}
 
@@ -226,7 +231,7 @@ func update(poductName string, stock int, allProducts *[]ProductInfo) {
 
 			} else if stock < 0 {
 				fmt.Printf("Removed %d units. New stock: %d\n",
-					stock, (*allProducts)[i].quantity)
+					-stock, (*allProducts)[i].quantity)
 
 			} else {
 				fmt.Println("Update failed: Product not found")
@@ -236,20 +241,23 @@ func update(poductName string, stock int, allProducts *[]ProductInfo) {
 
 	}
 }
-func exit(allProducts []*ProductInfo) {
+func exit(allProducts *[]ProductInfo) {
 	fmt.Println("--- SYSTEM EXIT ---")
+
 	totalProducts := 0
 	totalItems := 0
 	totalPrice := 0.00
-  for i := 0; i < len(allProducts); i++ {
-	totalProducts +=1
-	totalItems+= allProducts[i].quantity
-	totalPrice+=float64( allProducts[i].quantity)*allProducts[i].price
-  }
- fmt.Println("Final inventory status:")
-fmt.Printf("Total products:%d\n",totalProducts )
-fmt.Printf("Total items: %d\n", totalItems)
-fmt.Printf("Total value: $%2.f\n", totalPrice)
-fmt.Println("Session completed successfully")
-fmt.Println("Thank you for using the Inventory Management System")
+
+	for i := 0; i < len(*allProducts); i++ {
+		totalProducts += 1
+		totalItems += (*allProducts)[i].quantity
+		totalPrice += float64((*allProducts)[i].quantity) * (*allProducts)[i].price
+	}
+
+	fmt.Println("Final inventory status:")
+	fmt.Printf("Total products: %d\n", totalProducts)
+	fmt.Printf("Total items: %d\n", totalItems)
+	fmt.Printf("Total value: $%.2f\n", totalPrice)
+	fmt.Println("Session completed successfully")
+	fmt.Println("Thank you for using the Inventory Management System")
 }
