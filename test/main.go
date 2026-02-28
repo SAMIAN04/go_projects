@@ -21,12 +21,15 @@ func main() {
 	scanner.Scan()
 	studentsDataStr := scanner.Text()
 	studentNumber, _ := strconv.Atoi(studentNumberStr)
-//  gradesExist := false
+	//  gradesExist := false
 	studentData := make(map[string]Studentinfo)
 	gradesCount := make(map[string]int)
 	studentsData := strings.Split(studentsDataStr, ",")
+	maxName := ""
+	maxId := 0
 	//grades := []Studentinfo{}
-
+	keys := []string{}
+     grades := []string{}
 	for i := 0; i < studentNumber; i++ {
 		parts := strings.Split(studentsData[i], ":")
 		Name := parts[0]
@@ -36,29 +39,40 @@ func main() {
 			Id:    Id,
 			Grade: Grade,
 		}
-		
+
 	}
-	keys := []string{}
-    
-	for k := range studentData{
+	
+
+	for k := range studentData {
 		keys = append(keys, k)
 	}
-	sort.Slice(keys,func(i, j int) bool {
+	sort.Slice(keys, func(i, j int) bool {
 		return keys[i] < keys[j]
 	})
-	
-	
+
 	for i := range keys {
-		
+
 		fmt.Printf("%s: ID %d, Grade %s\n", keys[i], studentData[keys[i]].Id, studentData[keys[i]].Grade)
-		
-		
+		gradesCount[studentData[keys[i]].Grade]++
+		if studentData[keys[i]].Id > maxId {
+			maxId = studentData[keys[i]].Id
+			maxName = keys[i]
+		}
 	}
 	// we dk how tf it works we neeed to find out amd lot of works left
-	for _,grade := range studentData{
-		gradesCount[grade.Grade]++
+
+	for k := range gradesCount {
+		
+		grades =append(grades,k)
+		
+	}
+	sort.Slice(grades,func(i, j int) bool {
+		return grades[i]< grades[j]
+	})
+	for _,g := range grades {
+           fmt.Printf("Grade %s: %d students\n", g,gradesCount[g])
 	}
 	
-	fmt.Println(gradesCount)
-
+	fmt.Printf("Highest ID: %s (%d)\n", maxName,maxId)
+    fmt.Printf("Total students: %d\n", studentNumber)
 }
