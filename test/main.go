@@ -6,22 +6,33 @@ import (
 	"strings"
 )
 
+type Product struct {
+	name     string
+	price    float64
+	quantity int
+}
+
 func main() {
 	// Read input
 	var numProductsStr string
 	var productDataStr string
 	var operationsStr string
-	
+
 	fmt.Scanln(&numProductsStr)
 	fmt.Scanln(&productDataStr)
 	fmt.Scanln(&operationsStr)
-	
+	var productData []Product
+	var operationsData []Product
+	inventory := make(map[string]*Product)
 	// TODO: Define Product struct here
-	
+
 	// TODO: Create map to store product pointers
-	
+
 	// TODO: Create slice to maintain product order (to ensure consistent output)
 	
+productData = pharse(productDataStr)
+operationsData= pharse(operationsStr)
+fmt.Println(operationsData)
 	// TODO: Parse product data and populate the map
 	// Remember to:
 	// - Split productDataStr by commas to get individual entries
@@ -29,22 +40,24 @@ func main() {
 	// - Convert price and quantity strings to appropriate types
 	// - Store pointer to Product struct in map
 	// - Add product name to order slice
-	
-	// TODO: Display initial inventory
-	// Use the order slice to iterate through products consistently
-	// Format: "[name]: $[price] (Stock: [quantity])"
-	
-	// TODO: Parse and apply update operations
-	// Remember to:
-	// - Split operationsStr by commas to get individual operations
-	// - For each operation, split by colons to get type, name, value
-	// - Update the appropriate field directly through the map pointer
-	// - Print update message for each operation
-	
-	// TODO: Display updated inventory
-	// Again, use the order slice for consistent output
-	// Calculate total value while displaying
-	
-	// TODO: Calculate and display total inventory value
-	// Format: "Total Inventory Value: $[total_value]"
+	for _, product := range productData {
+		inventory[product.name] = &Product{price: product.price,quantity: product.quantity}
+	}
+	fmt.Println(inventory["laptop"])
+	fmt.Println("Initial Inventory:")
+	for i, product := range inventory {
+		fmt.Printf("%s: $%.2f (Stock: %d)\n",i ,product.price,product.quantity)
+	}
+}
+
+func pharse(productDataStr string) []Product {
+	productData := []Product{}
+	productDataParts := strings.Split(productDataStr, ",")
+	for _, product := range productDataParts {
+		parts := strings.Split(product, ":")
+		price, _ := strconv.ParseFloat(parts[1], 64)
+		quantity, _ := strconv.Atoi(parts[2])
+		productData = append(productData, Product{name: parts[0], price: price, quantity: quantity})
+	}
+	return productData
 }
