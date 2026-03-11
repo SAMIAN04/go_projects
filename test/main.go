@@ -49,12 +49,10 @@ func main() {
 		case "init":
 			{
 				if operation.Type == "scores" {
-					Mapinit(scores, operation.Type)
+					Mapinit(&scores, operation.Type)
 				} else if operation.Type == "grades" {
-					Mapinit(grades, operation.Type)
-
+					Mapinit(&grades, operation.Type)
 				}
-
 			}
 		case "add" :{
 			if operation.Type == "scores" {
@@ -64,14 +62,27 @@ func main() {
 
 				}
 		}
-		}
+	case "check": {
+		if operation.Type == "scores" {
+					check(scores,operation.Type)
+				} else if operation.Type == "grades" {
+					check(grades,operation.Type)
+
+				}
 	}
+		}
+		
+		
+	}
+	final(scores,"scores")
+		final(grades,"grades")
+
 
 }
 
-func Mapinit(scores map[string]int, Type string) {
-	if scores == nil {
-		scores = make(map[string]int)
+func Mapinit(scores *map[string]int, Type string) {
+	if *scores == nil {
+		*scores = make(map[string]int)
 	}
 	fmt.Printf("Initialized map %s\n", Type)
 }
@@ -84,4 +95,18 @@ func add (scores map[string]int,Type string, name string,score int ){
 	scores[name] = score
 	
    }
+}
+func check(scores map[string]int , Type string)  {
+	if scores == nil {
+		fmt.Printf("Map %s is nil\n", Type)
+	}else{
+		fmt.Printf("Map %s is initialized\n", Type)
+	}
+}
+func final(scores map[string]int , Type string)  {
+	if scores == nil {
+		fmt.Printf("Final state - %s: nil\n", Type)
+	}else{
+		fmt.Printf("Final state - %s: %d entries\n", Type, len(scores))
+	}
 }
