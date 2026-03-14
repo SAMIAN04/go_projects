@@ -1,112 +1,64 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
-type Opatrations struct {
-	Task  string
-	Type  string
-	Name  string
-	score int
-}
-
 func main() {
-	// Read input
-	var numOpsStr string
-	var operationsStr string
-	fmt.Scanln(&numOpsStr)
-	fmt.Scanln(&operationsStr)
-	//numOps, _ := strconv.Atoi(numOpsStr)
-	// Declare maps without initialization (they will be nil)
-	var scores map[string]int
-	var grades map[string]int
+	scanner := bufio.NewScanner(os.Stdin)
 
-	// Split operations by comma
-	operationsParts := strings.Split(operationsStr, ",")
-	operations := []Opatrations{}
+	// Read the full line of text (including spaces)
+	scanner.Scan()
+	text := scanner.Text()
 
-	for _, operationParts := range operationsParts {
-		operation := strings.Split(operationParts, ":")
+	// Read the threshold value
+	scanner.Scan()
+	thresholdStr := scanner.Text()
 
-		if len(operation) == 2 {
-			task := operation[0]
-			types := operation[1]
-			operations = append(operations, Opatrations{Task: task, Type: types})
+	// Convert threshold to integer
+	threshold, _ := strconv.Atoi(thresholdStr)
+	wordMap := make(map[string]int)
+	UniquWordsSlice := []string{}
+	AbovThreshold := []string{}
 
-		} else if len(operation) == 4 {
-			task := operation[0]
-			types := operation[1]
-			name := operation[2]
-			score, _ := strconv.Atoi(operation[3])
-			operations = append(operations, Opatrations{Task: task, Type: types, score: score, Name: name})
-		}
+	var mostFrequentWordCount int
+	mostFrequentWord := ""
+	fmt.Println("Word Frequency Analysis:")
+	countWords(text, threshold, wordMap, &UniquWordsSlice, &AbovThreshold, &mostFrequentWordCount, &mostFrequentWord)
+	fmt.Printf("Total unique words: %d\n", len(wordMap))
+	fmt.Printf("Words above threshold: %d\n", len(AbovThreshold))
+	fmt.Printf("Most frequent word: %s (%d times)\n", mostFrequentWord, mostFrequentWordCount)
+}
+
+func countWords(text string, threshold int, wordMap map[string]int, UniquWordsSlice *[]string, AbovThreshold *[]string, mostFrequentWordCount *int, mostFrequentWord *string) {
+	words := strings.Fields(strings.ToLower(text))
+	for _, word := range words {
+		wordMap[word]++
 	}
-	for _, operation := range operations {
-		switch operation.Task {
-		case "init":
-			{
-				if operation.Type == "scores" {
-					Mapinit(&scores, operation.Type)
-				} else if operation.Type == "grades" {
-					Mapinit(&grades, operation.Type)
-				}
-			}
-		case "add" :{
-			if operation.Type == "scores" {
-					add(scores,operation.Type,operation.Name,operation.score)
-				} else if operation.Type == "grades" {
-					add(grades,operation.Type,operation.Name,operation.score)
 
-				}
+	for word, count := range wordMap {
+		// fmt.Printf("%s: %d\n", word, count)
+		if count == 1 {
+			*UniquWordsSlice = append(*UniquWordsSlice, word)
 		}
-	case "check": {
-		if operation.Type == "scores" {
-					check(scores,operation.Type)
-				} else if operation.Type == "grades" {
-					check(grades,operation.Type)
-
-				}
-	}
+		if count >= threshold {
+			*AbovThreshold = append(*AbovThreshold, word)
 		}
 		
-		
 	}
-	final(scores,"scores")
-		final(grades,"grades")
 
+	sort.Strings(*AbovThreshold)
+	for _, word := range *AbovThreshold {
+		fmt.Printf("%s: %d\n", word, wordMap[word])
+		if wordMap[word] > *mostFrequentWordCount && wordMap[word] != *mostFrequentWordCount {
+			*mostFrequentWordCount = wordMap[word]
+			*mostFrequentWord = word
 
-}
-
-func Mapinit(scores *map[string]int, Type string) {
-	if *scores == nil {
-		*scores = make(map[string]int)
-	}
-	fmt.Printf("Initialized map %s\n", Type)
-}
-
-func add (scores map[string]int,Type string, name string,score int ){
-   if scores == nil {
-	fmt.Printf("Cannot add to nil map %s\n", Type)
-   }else {
-	fmt.Printf("Added %s:%d to %s\n", name,score,Type)
-	scores[name] = score
-	
-   }
-}
-func check(scores map[string]int , Type string)  {
-	if scores == nil {
-		fmt.Printf("Map %s is nil\n", Type)
-	}else{
-		fmt.Printf("Map %s is initialized\n", Type)
-	}
-}
-func final(scores map[string]int , Type string)  {
-	if scores == nil {
-		fmt.Printf("Final state - %s: nil\n", Type)
-	}else{
-		fmt.Printf("Final state - %s: %d entries\n", Type, len(scores))
+		}
 	}
 }
