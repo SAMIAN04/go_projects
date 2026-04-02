@@ -10,44 +10,29 @@ import (
 func main() {
 	// Read input
 	var countStr string
-	var languagesStr string
+	var skillsStr string
 	fmt.Scanln(&countStr)
-	fmt.Scanln(&languagesStr)
-	// Convert count string to integer (not needed for this challenge)
+	fmt.Scanln(&skillsStr)
+	
+	// Convert count string to integer (for reference only - not used in loop)
 	_, _ = strconv.Atoi(countStr)
-
-	// Split the languages string by commas
-	languages := strings.Split(languagesStr, ",")
-
-	// Create a set using map[string]struct{} idiom
-	languageSet := make(map[string]struct{})
-
-	for _, language := range languages {
-
-		_, exist := languageSet[language]
-		languageSet[language] = struct{}{}
-		if exist {
-			fmt.Printf("Already exists: %s\n", language)
-		} else {
-			fmt.Printf("Added: %s\n", language)
-		}
-
+	
+	// Initialize skill set with starter skills
+	skillSet := map[string]struct{}{
+		"Programming":     struct{}{},
+		"Problem Solving": struct{}{},
+		"Communication":   struct{}{},
 	}
-	fmt.Printf("Total languages processed: %s\n", countStr)
-	fmt.Printf("Unique languages: %d\n", len(languageSet))
-
-	// Print all unique languages in the set
-	fmt.Println("Programming languages in set:")
-	keys := make([]string, 0, len(languageSet))
-	for k := range languageSet {
-		keys = append(keys, k)
-
-	}
-	sort.Strings(keys)
-
-	for _, k := range keys {
-		fmt.Printf("- %s\n", k)
-	}
-	// Convert map to slice and sort for consistent output
-	// List each language with "- [language]" format
+	
+	// Split skills string into individual skills
+	skills := strings.Split(skillsStr, ",")
+	
+	// TODO: Write your code below
+	// Process each skill using range to iterate over ALL skills in the slice
+	// Use comma ok idiom: _, exists := skillSet[skill]
+	// Add new skills using: skillSet[skill] = struct{}{}
+	// Display processing results for each skill
+	// Calculate and display progress summary using len(skills)
+	// List all skills in the complete skill set (consider sorting for consistent output)
+	
 }
